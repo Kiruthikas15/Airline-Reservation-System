@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <style>
+        /* Your existing CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('https://images.pexels.com/photos/2388568/pexels-photo-2388568.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-position: center; 
+            background-repeat: no-repeat;
+        }
+
+        header, footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+        }
+
+        form {
+            max-width: 400px;
+            width: 400px;
+            margin: auto;
+            border: 1px solid #ccc;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            align-items: center; 
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            background-color: #ffe4e1;
+        }
+
+        button {
+            background-color: #ff1493;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #e0115f;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>PAYMENT PAGE</h2>
+    </header>
+
+    <form id="payment-form" action="PaymentServlet" method="post">
+        <label for="pin">PIN:</label>
+        <input type="password" id="pin" name="pin" pattern="\d{12}" title="PIN must be a 12-digit number" required>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" pattern="\d{6}" title="Password must be a 6-digit number" required>
+
+        <label for="class">Select Class:</label>
+        <select id="class" name="class" required>
+            <option value="economy">Economy</option>
+            <option value="business">Business</option>
+        </select>
+
+        <!-- Hidden fields for booking details -->
+        <input type="hidden" id="flightid" name="flightid">
+        <input type="hidden" id="fare" name="fare">
+        <input type="hidden" id="departure" name="departure">
+        <input type="hidden" id="destination" name="destination">
+        <input type="hidden" id="name" name="name">
+
+        <div class="error" id="error-message"></div>
+        <button type="submit">Submit Payment</button>
+    </form>
+
+    <footer>
+        &copy; 2024 Payment System
+    </footer>
+
+    <script>
+        window.onload = function() {
+            var urlParams = new URLSearchParams(window.location.search);
+            document.getElementById('flightid').value = urlParams.get('flightid') || '';
+            document.getElementById('fare').value = urlParams.get('fare') || '';
+            document.getElementById('departure').value = urlParams.get('departure') || '';
+            document.getElementById('destination').value = urlParams.get('destination') || '';
+            document.getElementById('name').value = urlParams.get('name') || '';
+        };
+    </script>
+
+</body>
+</html>

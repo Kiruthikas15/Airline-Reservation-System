@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flight Details</title>
+  <style>
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .grid-item {
+      background-color: #f1f1f1;
+      border: 1px solid black;
+      text-align: center;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .grid-item:hover {
+      cursor: pointer;
+      background-color: #dcdcdc;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-container">
+    <div class="grid-item">Flight ID<br><input type="text"></div>
+    <div class="grid-item">Flight Name<br><input type="text"></div>
+    <div class="grid-item">Date<br><input type="date"></div>
+    <div class="grid-item">Time<br><input type="time"></div>
+    <div class="grid-item">First class<br><input type="text"></div>
+    <div class="grid-item">Business class<br><input type="text"></div>
+    <div class="grid-item">Economic class<br><input type="text"></div>
+    <div class="grid-item">Seat count<br><input type="text" value="100" disabled></div>
+    <div class="grid-item">Route Code<br><input type="text" value="001" disabled></div>
+    <div class="grid-item">Comments<br><textarea></textarea></div>
+    <div class="grid-item"><button>Save</button></div>
+    <div class="grid-item"><button>Update</button></div>
+    <div class="grid-item"><button>Delete</button></div>
+    <div class="grid-item"><button>New</button></div>
+    <div class="grid-item"><button>Get Data</button></div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qatar Airways</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+        
+    <script>
+        function populateAirports(inputId, dataListId) {
+            var input = document.getElementById(inputId);
+            var dataList = document.getElementById(dataListId);
+
+            input.addEventListener("input", function() {
+                dataList.innerHTML = "";
+                var airports = [
+                	{code: "ch", name: "Chennai"},
+                    {code: "co", name: "Coimbatore"},
+                    {code: "ba", name: "Banglore"},
+                    {code: "kol", name: "Kolkatta"},
+                    {code: "mum", name: "Mumbai"},
+                    {code: "pun", name: "Pune"},
+                    {code: "del", name: "Delhi"}
+                ];
+                airports.forEach(function(airport) {
+                    var option = document.createElement('option');
+                    option.value = airport.name;
+                    dataList.appendChild(option);
+                });
+            });
+        }
+        
+        function togglePassengerClassModal() {
+            var modal = document.getElementById("passenger-class-modal");
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+            updateSummary(); // Update summary when closing the modal
+        }
+    
+        function updatePassengerCount(passengerType, increment) {
+            var countInput = document.getElementById(passengerType);
+            var currentCount = parseInt(countInput.value, 10);
+            if (increment) {
+                currentCount++;
+            } else if (currentCount > 0) {
+                currentCount--;
+            }
+            countInput.value = currentCount;
+        }
+    
+        function updateSummary() {
+            var adults = parseInt(document.getElementById('adults').value, 10);
+            var children = parseInt(document.getElementById('children').value, 10);
+            var infants = parseInt(document.getElementById('infants').value, 10);
+            var classType = document.getElementById('class').value;
+    
+            var totalPassengers = adults + children + infants;
+            var summary = totalPassengers + ' Passenger' + (totalPassengers !== 1 ? 's' : '') + ', ' + classType.charAt(0).toUpperCase() + classType.slice(1);
+            document.getElementById('passenger-summary').value = summary;
+        }
+    
+      <!-- function handleFormSubmission(event) {
+            event.preventDefault();
+            // Handle form submission logic here
+            // For now, let's redirect to the results page as an example
+            window.location.href = 'flightresult.html';
+        }-->
+    
+        window.onload = function() {
+            populateAirports("departure", "from-airport-list");
+           populateAirports("destination", "to-airport-list");
+            document.getElementById("passenger-summary").addEventListener("click", togglePassengerClassModal);
+            //document.getElementById("flight-search-form").addEventListener("submit", handleFormSubmission);
+            updateSummary(); // Initialize summary on page load
+        };
+    </script>
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Explore</a></li>
+                <li><a href="#">Book</a></li>
+                <li><a href="#">Experience</a></li>
+                <li><a href="#">Privilege Club</a></li>
+                <li><a href="#">Book a flight</a></li>
+                <li><a href="#">Stopover / Packages</a></li>
+                <li><a href="#">Manage / Check in</a></li>
+                <li><a href="#">Flight status</a></li>
+            </ul>
+            <div class="language">
+                <a href="#">EN</a>
+                <a href="#">JP</a>
+                <a href="#">CN</a>
+            </div>
+            <div class="user">
+                <a href="#">Sign in</a>
+                <a href="#">Join now</a>
+            </div>
+        </nav>
+        
+    </header>
+    <main>
+        <div class="booking">
+            <h1>Book a flight</h1>
+            <form id="flight-search-form" action="FlightServlet1" method="post">
+                <label for="trip-type">Trip type:</label>
+                <select id="trip-type">
+                    <option value="return">Return</option>
+                    <option value="one-way">One way</option>
+                    <option value="multi-city">Multi-city</option>
+                </select>
+                
+                <label for="departure">From:</label>
+                <input type="text" id="departure" placeholder="Enter origin city" list="from-airport-list">
+                <datalist id="from-airport-list"></datalist>
+        
+                <label for="destination">To:</label>
+                <input type="text" id="destination" placeholder="Enter destination city" list="to-airport-list">
+                <datalist id="to-airport-list"></datalist>
+        
+                <label for="depart">Depart:</label>
+                <input type="date" id="depart">
+        
+                <label for="passenger-summary">Passengers / Class:</label>
+                <input type="text" id="passenger-summary" readonly placeholder="Select passengers and class">
+        
+                <button type="submit">Search flights</button>
+                
+                
+            </form>
+           
+        </div>
+        
+        <div id="passenger-class-modal" class="modal" style="display: none;">
+            <div class="passenger-count">
+                <label for="adults">Adults:</label>
+                <button type="button" onclick="updatePassengerCount('adults', false)">-</button>
+                <input type="text" id="adults" value="1" readonly>
+                <button type="button" onclick="updatePassengerCount('adults', true)">+</button>
+            </div>
+            <div class="passenger-count">
+                <label for="children">Children:</label>
+                <button type="button" onclick="updatePassengerCount('children', false)">-</button>
+                <input type="text" id="children" value="0" readonly>
+                <button type="button" onclick="updatePassengerCount('children', true)">+</button>
+            </div>
+            <div class="passenger-count">
+                <label for="infants">Infants:</label>
+                <button type="button" onclick="updatePassengerCount('infants', false)">-</button>
+                <input type="text" id="infants" value="0" readonly>
+                <button type="button" onclick="updatePassengerCount('infants', true)">+</button>
+            </div>
+            <label for="class">Class:</label>
+            <select id="class" onchange="updateSummary()">
+                <option value="economy">Economy</option>
+                <option value="premium">Premium</option>
+            </select>
+            <button type="submit" onclick="togglePassengerClassModal()">Close</button>
+        </div>
+        
+    </main>
+    <footer>
+        <!-- Your existing footer content -->
+         <div class="destination">
+    <img url="https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Ftaj-mahal&psig=AOvVaw0B2lErPRNTvtszgpmfyKfy&ust=1706544837909000&source=images&cd=vfe&opi=89978449&ved=0CBMQjRxqFwoTCJi-8sm9gIQDFQAAAAAdAAAAABAD" alt="Discover Paris">
+    <a href="https://example.com/paris" class="discover-button">Discover</a>
+</div>
+
+<div class="meal">
+    <img src="C:\Users\DREAM\Downloads\DALL·E 2024-01-28 21.40.24 - An appetizing image of an economy class airline meal, featuring a main dish, a side salad, a roll, dessert, and a beverage. The meal should be present.png" alt="Economy Class Meal">
+    <p>Economy Class Meal</p>
+</div>
+
+<div class="meal">
+    <img src="C:\Users\DREAM\Downloads\DALL·E 2024-01-28 21.40.26 - A luxurious and enticing image of a premium class airline meal, showcasing a gourmet main course, a sophisticated appetizer, a fine dessert, and a sel.png" alt="Premium Class Meal">
+    <p>Premium Class Meal</p>
+</div>
+        <p>© 2024 Qatar Airways. All rights reserved.</p>
+    </footer>
+</body>
+</html>

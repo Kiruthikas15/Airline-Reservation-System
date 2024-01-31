@@ -1,0 +1,99 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Booking - India Airlines</title>
+    <style>
+        /* Your existing CSS styles */
+        /* Your existing CSS styles */
+        /* Add your CSS styling here */
+        body {
+            /* Sample styling; customize as needed */
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.pexels.com/photos/3040705/pexels-photo-3040705.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        form {
+            max-width: 500px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+         h2 {
+         text-align:center;
+            margin-top: 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+        .form-group {
+            text-align: center; /* Align children elements to the center */
+        }
+        .form-group button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-block;
+        }
+        .form-group button:hover {
+            background-color: #0069d9;
+        }
+    </style>
+</head>
+<body>
+    <form id="booking-form" action="userdetailsServlet" method="post">
+        <h2>Flight Booking</h2>
+        <label for="name">Passenger Name:</label>
+        <input type="text" id="name" name="name" required>
+
+        <label for="aadhar">Aadhaar Number:</label>
+        <input type="text" id="aadhar" name="aadhar" pattern="[0-9]{12}" title="Aadhaar number must be 12 digits" required>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="phone">Phone Number:</label>
+        <input type="tel" id="phone" name="phone" required>
+
+        <!-- Hidden fields to hold flight details -->
+        <input type="hidden" id="flightid" name="flightid">
+        <input type="hidden" id="fare" name="fare">
+        <input type="hidden" id="departure" name="departure">
+        <input type="hidden" id="destination" name="destination">
+
+        <div class="form-group">
+            <button type="submit">PAY NOW</button>
+        </div>
+    </form>
+
+
+    <script>
+        window.onload = function() {
+            // Populate hidden fields from URL parameters
+            var urlParams = new URLSearchParams(window.location.search);
+            document.getElementById('flightid').value = urlParams.get('flightid') || '';
+            document.getElementById('fare').value = urlParams.get('fare') || '';
+            document.getElementById('departure').value = urlParams.get('departure') || '';
+            document.getElementById('destination').value = urlParams.get('destination') || '';
+        };
+    </script>
+</body>
+</html>

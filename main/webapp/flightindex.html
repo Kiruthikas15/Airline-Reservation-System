@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Qatar Airways</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+        
+    <script>
+        function populateAirports(inputId, dataListId) {
+            var input = document.getElementById(inputId);
+            var dataList = document.getElementById(dataListId);
+
+            input.addEventListener("input", function() {
+                dataList.innerHTML = "";
+                var airports = [
+                    {code: "ch", name: "Chennai"},
+                    {code: "co", name: "Coimbatore"},
+                    {code: "ba", name: "Banglore"},
+                    {code: "kol", name: "Kolkatta"},
+                    {code: "mum", name: "Mumbai"},
+                    {code: "pun", name: "Pune"},
+                    {code: "del", name: "Delhi"}
+                ];
+                airports.forEach(function(airport) {
+                    var option = document.createElement('option');
+                    option.value = airport.name;
+                    dataList.appendChild(option);
+                });
+            });
+        }
+    
+        function togglePassengerClassModal() {
+            var modal = document.getElementById("passenger-class-modal");
+            modal.style.display = modal.style.display === "block" ? "none" : "block";
+            updateSummary(); // Update summary when closing the modal
+        }
+    
+        function updatePassengerCount(passengerType, increment) {
+            var countInput = document.getElementById(passengerType);
+            var currentCount = parseInt(countInput.value, 10);
+            if (increment) {
+                currentCount++;
+            } else if (currentCount > 0) {
+                currentCount--;
+            }
+            countInput.value = currentCount;
+        }
+    
+        function updateSummary() {
+            var adults = parseInt(document.getElementById('adults').value, 10);
+            var children = parseInt(document.getElementById('children').value, 10);
+            var infants = parseInt(document.getElementById('infants').value, 10);
+            var classType = document.getElementById('class').value;
+    
+            var totalPassengers = adults + children + infants;
+            var summary = totalPassengers + ' Passenger' + (totalPassengers !== 1 ? 's' : '') + ', ' + classType.charAt(0).toUpperCase() + classType.slice(1);
+            document.getElementById('passenger-summary').value = summary;
+        }
+        
+
+    
+        function handleFormSubmission(event) {
+           
+            event.preventDefault();
+            console.log("Form submission triggered");  // Test log
+            alert("Form submission triggered");       // Test alert
+            var departure = document.getElementById('departure').value;
+            var destination = document.getElementById('destination').value;
+
+            fetch('FlightServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'departure=' + encodeURIComponent(departure) + '&destination=' + encodeURIComponent(destination)
+            })
+            .then(response => response.text())
+            .then(data => {
+                if (data === 'No flights found') {
+                    document.getElementById('error-message').textContent = data;
+                } else {
+                    window.location.href = 'searchflights.html';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('error-message').textContent = 'An error occurred';
+            });
+        }
+
+    
+        window.onload = function() {
+            populateAirports("departure", "from-airport-list");
+            populateAirports("destination", "to-airport-list");
+            document.getElementById("passenger-summary").addEventListener("click", togglePassengerClassModal);
+            document.getElementById("flight-search-form").addEventListener("submit", handleFormSubmission);
+            updateSummary(); // Initialize summary on page load
+            //document.getElementById("flight-search-form").addEventListener("submit", handleFormSubmission);
+
+        };
+    </script>
+    
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#">Explore</a></li>
+                <li><a href="#">Book</a></li>
+                <li><a href="#">Experience</a></li>
+                <li><a href="#">Privilege Club</a></li>
+                <li><a href="#">Book a flight</a></li>
+                <li><a href="#">Stopover / Packages</a></li>
+                <li><a href="#">Manage / Check in</a></li>
+                <li><a href="#">Flight status</a></li>
+            </ul>
+            
+            <div class="user">
+                <a href="#">Sign in</a>
+                <a href="#">Join now</a>
+            </div>
+        </nav>
+        
+    </header>
+    <main>
+        <div class="booking">
+            <h1>Book a flight</h1>
+            <form id="flight-search-form" action="#">
+                <label for="trip-type">Trip type:</label>
+                <select id="trip-type">
+                    <option value="return">Return</option>
+                    <option value="one-way">One way</option>
+                    <option value="multi-city">Multi-city</option>
+                </select>
+                
+                <label for="departure">From:</label>
+                <input type="text" id="departure" placeholder="Enter origin city" list="from-airport-list">
+                <datalist id="from-airport-list"></datalist>
+        
+                <label for="destination">To:</label>
+                <input type="text" id="destination" placeholder="Enter destination city" list="to-airport-list">
+                <datalist id="to-airport-list"></datalist>
+        
+                <label for="depart">Depart:</label>
+                <input type="date" id="depart">
+        
+                <label for="passenger-summary">Passengers / Class:</label>
+                <input type="text" id="passenger-summary" readonly placeholder="Select passengers and class">
+        
+                <button type="submit">Search flights</button>
+            </form>
+        </div>
+        
+        <div id="passenger-class-modal" class="modal" style="display: none;">
+            <div class="passenger-count">
+                <label for="adults">Adults:</label>
+                <button type="button" onclick="updatePassengerCount('adults', false)">-</button>
+                <input type="text" id="adults" value="1" readonly>
+                <button type="button" onclick="updatePassengerCount('adults', true)">+</button>
+            </div>
+            <div class="passenger-count">
+                <label for="children">Children:</label>
+                <button type="button" onclick="updatePassengerCount('children', false)">-</button>
+                <input type="text" id="children" value="0" readonly>
+                <button type="button" onclick="updatePassengerCount('children', true)">+</button>
+            </div>
+            <div class="passenger-count">
+                <label for="infants">Infants:</label>
+                <button type="button" onclick="updatePassengerCount('infants', false)">-</button>
+                <input type="text" id="infants" value="0" readonly>
+                <button type="button" onclick="updatePassengerCount('infants', true)">+</button>
+            </div>
+            <label for="class">Class:</label>
+            <select id="class" onchange="updateSummary()">
+                <option value="economy">Economy</option>
+                <option value="premium">Premium</option>
+            </select>
+            <button type="submit" onclick="togglePassengerClassModal()">Close</button>
+           
+        </div>
+        
+        <!-- Existing content-container -->
+<div class="content-container">
+    <div class="image-container">
+        <!-- Image for the first section -->
+        <p>EXPLORE NEW PLACES!! "</p>
+        <a href="https://www.holidify.com/places/delhi/sightseeing-and-things-to-do.html">
+        <img src="https://www.fabhotels.com/blog/wp-content/uploads/2023/01/Akshardham-Temple-min.jpg" style="width:100%; alt="Descriptive Text 1">
+    </div>
+    <div class="text-container">
+        <h2>DELHI</h2>
+        <p>
+            A vibrant metropolis blending historical richness with modern dynamism.
+        </p>
+        <!-- Add more content as needed for the first section -->
+    </div>
+</div>
+
+<!-- New content-container 2 -->
+<div class="content-container">
+    <div class="image-container">
+        <!-- Image for the second section -->
+        <a href="https://www.holidify.com/places/bangalore/sightseeing-and-things-to-do.html">
+        <img src="https://static.toiimg.com/photo/msid-54559212,width-96,height-65.cms" style="width:100%; alt="Descriptive Text 2">
+    </div>
+    <div class="text-container">
+        <h2>BANGLORE</h2>
+        <p>
+             A melting pot of cultures and ethnicities..
+        </p>
+        <!-- Add more content as needed for the second section -->
+    </div>
+</div>
+
+<!-- New content-container 3 -->
+<div class="content-container">
+    <div class="image-container">
+        <!-- Image for the third section -->
+        <a href="https://www.holidify.com/places/bangalore/sightseeing-and-things-to-do.html">
+        <img src="https://lp-cms-production.imgix.net/features/2017/07/GettyImages-552552051_1-622aee008bea.jpg" alt="Descriptive Text 3">
+    </div>
+    <div class="text-container">
+        <h2>MUMBAI</h2>
+        <p>
+            A bustling and vibrant financial capital of India.
+        </p>
+        <!-- Add more content as needed for the third section -->
+    </div>
+</div>
+<div class="content-container">
+    <div class="image-container">
+        <!-- Image for the third section -->
+        <a href="https://www.holidify.com/places/bangalore/sightseeing-and-things-to-do.html">
+        <img src="https://inflightfeed.com/wp-content/uploads/2014/10/fea_032_aba_00.jpg" alt="Descriptive Text 3">
+    </div>
+    <div class="text-container">
+        <h2>ECONOMY FOOD </h2>
+        <p>
+            ENJOY YOUR DELICIOUS FOOD!!!
+        </p>
+        <!-- Add more content as needed for the third section -->
+    </div>
+</div>
+<div class="content-container">
+    <div class="image-container">
+        <!-- Image for the third section -->
+        <a href="https://www.holidify.com/places/bangalore/sightseeing-and-things-to-do.html">
+        <img src="https://media.istockphoto.com/id/1141775104/photo/first-class-air-travel-luxury-meal-service.jpg?s=612x612&w=0&k=20&c=sc_RReQyoP_KGExN48g2PN9dpC5MEN57Pi2QsW6cpHY=" alt="Descriptive Text 3">
+    </div>
+    <div class="text-container">
+        <h2>PREMIUM FOOD</h2>
+        <p>
+            ENJOY YOUR DELICIOUS FOOD!!!
+        </p>
+        <!-- Add more content as needed for the third section -->
+    </div>
+</div>
+        
+        
+        
+        
+    </main>
+    <footer>
+        <!-- Your existing footer content -->
+        <p>© 2024 Qatar Airways. All rights reserved.</p>
+    </footer>
+</body>
+</html>

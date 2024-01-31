@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KIRUTHI</title>
+<style>
+
+body {
+   /* background-image: url('https://cdn.pixabay.com/photo/2018/01/26/21/56/sakura-3109879_1280.jpg');*/
+    background-image: url('https://cdn.pixabay.com/photo/2023/01/14/19/50/ai-generated-7718952_1280.jpg');
+    background-size: cover; /* Optional: to cover the entire screen */
+    background-repeat: no-repeat; /* Optional: to avoid tiling */
+    background-attachment: fixed; /* Optional: to keep the image fixed during scrolling */
+    /* Rest of your styles... */
+
+
+  
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+form {
+    background: #FFFFFF;
+    border-radius: 10px;
+     background: rgba(255, 255, 255, 0.4);
+    padding: 40px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+h1 {
+    color: #333;
+    margin-bottom: 4px;
+}
+
+p {
+    color: #666;
+    font-size: 14px;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #eee;
+    margin: 30px 0;
+}
+
+label {
+    color: #333;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+   
+   padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button.signupbtn {
+    background-color:brown;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+button.signupbtn:hover {
+    background-color: #45a049;
+}
+
+.container {
+    text-align: center;
+}
+
+.signin {
+    background-color: #f1f1f1;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+}
+
+.signin p {
+    margin: 0;
+}
+
+.signin a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.signin a:hover {
+    text-decoration: underline;
+}
+
+
+      hr {
+         margin-top: 8px;
+         margin-bottom: 8px;
+         border: 0;
+         border-top: 1px solid #eee;
+      }
+</style>
+</head>
+<body>
+
+<form method="post" action="DemoServlet1">
+    <div class="container">
+        <h1>Sign Up</h1>
+        <hr>
+        <p>Fill the form to create an account</p>
+        <hr>
+        <label for="email"><b>Email:</b></label>
+        <input name="email" type="email" required><br><br>
+        <label for="password"><b>Password:</b></label>
+        <input name="password" type="password" required><br><br>
+        <button type="submit" class="signupbtn">Sign Up</button>
+    </div>
+    <div class="container signin">
+        <p>Already have an account? <a href="login.html">Log in</a>.</p>
+    </div>
+</form>
+</body>
+</html>
